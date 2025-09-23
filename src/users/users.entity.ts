@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { GamePlayer } from 'src/games/gamePlayers.entity';
 import {
   Column,
@@ -15,10 +16,11 @@ export class User {
   @Column({ unique: true })
   username: string;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ unique: true })
   email: string;
 
   @Column()
+  @Exclude()
   passwordHash: string;
 
   @Column({ default: 1000 })
