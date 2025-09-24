@@ -1,6 +1,7 @@
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
+  IsNotEmpty,
   IsString,
   Matches,
   MaxLength,
@@ -8,7 +9,8 @@ import {
 } from 'class-validator';
 import { PASSWORD_ERROR_MESSAGE } from 'src/CONSTS/authErrorMessages';
 
-export class AuthCredentialsDto {
+// TODO: Put these into seperate DTO files
+export class SignUpDto {
   @IsString()
   @MaxLength(18)
   @MinLength(3)
@@ -25,6 +27,17 @@ export class AuthCredentialsDto {
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: PASSWORD_ERROR_MESSAGE,
   })
+  @Transform(({ value }: { value: string }) => value.trim())
+  password: string;
+}
+
+export class SignInDto {
+  @IsEmail()
+  @Transform(({ value }: { value: string }) => value.toLowerCase())
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
   @Transform(({ value }: { value: string }) => value.trim())
   password: string;
 }
