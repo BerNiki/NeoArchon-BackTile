@@ -14,3 +14,7 @@ export const NEW_PASSWORD_ERROR_MESSAGE =
   'New password cannot be the same as old password';
 
 export const INCORRECT_PASSWORD_ERROR_MESSAGE = 'Password incorrect';
+
+export const REFRESH_TOKEN_INVALID = 'Refresh token invalid.';
+
+export const REFRESH_TOKEN_MISSING = 'Refresh token not found';

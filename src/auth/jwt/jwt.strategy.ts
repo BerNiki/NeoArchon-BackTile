@@ -6,11 +6,12 @@ import { JwtPayload } from './jwt.payload.interface';
 import { User } from 'src/users/users.entity';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private readonly usersService: UsersService) {
     super({
       secretOrKey: 'willhideinEnv',
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
     });
   }
 
@@ -18,9 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { email } = payload;
     const user = await this.usersService.findByEmailSafe(email);
 
-    if (!user) {
-      throw new UnauthorizedException();
-    }
+    if (!user) throw new UnauthorizedException();
 
     return user;
   }

@@ -51,11 +51,10 @@ export class UsersService {
     return savedUser;
   }
 
-  async deleteUser(id: string): Promise<User> {
-    const userToDelete = await this.findById(id);
+  async deleteUser(id: string) {
+    await this.findById(id);
 
     await this.usersRepo.delete(id);
-    return userToDelete;
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {

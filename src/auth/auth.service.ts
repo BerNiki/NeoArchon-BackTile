@@ -30,6 +30,28 @@ export class AuthService {
     private readonly usersRepo: Repository<User>,
   ) {}
 
+  async refreshTokens(user: User) {
+    const newAccessToken = this.jwtService.sign(
+      {
+        username: user.username,
+        email: user.email,
+      },
+      { expiresIn: '15m' },
+    );
+
+    const newRefreshToken = this.jwtService.sign(
+      { username: user.username, email: user.email },
+      { expiresIn: '7d' },
+    );
+
+    const hashedNewRefreshToken = await bcrypt.hash(newRefreshToken, 10);
+    await this.usersService.updateUser(user.id, {
+      currentHashedRefreshToken: hashedNewRefreshToken,
+    });
+
+    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+  }
+
   async signUp(signUpDto: SignUpDto): Promise<User> {
     const { email, password, username } = signUpDto;
 
@@ -51,6 +73,16 @@ export class AuthService {
       email,
       passwordHash: hashedPassword,
     });
+  }
+
+  async logout(user: User): Promise<{
+    message: string;
+  }> {
+    await this.usersService.updateUser(user.id, {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      currentHashedRefreshToken: null as any,
+    });
+    return { message: 'Logged out' };
   }
 
   async updatePassword(
@@ -75,7 +107,9 @@ export class AuthService {
     return this.usersRepo.findOneBy({ id });
   }
 
-  async signIn(signInDto: SignInDto): Promise<{ accessToken: string }> {
+  async signIn(
+    signInDto: SignInDto,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const { password, email } = signInDto;
     const user = await this.usersService.findByEmail(email);
 
@@ -84,9 +118,22 @@ export class AuthService {
         username: user.username,
         email: user.email,
       };
-      const accessToken: string = this.jwtService.sign(payload);
 
-      return { accessToken };
+      const accessToken: string = this.jwtService.sign(payload, {
+        expiresIn: '15m',
+      });
+      const refreshToken: string = this.jwtService.sign(payload, {
+        secret: 'willhideinEnvrefresh',
+        expiresIn: '2d',
+      });
+
+      const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+
+      await this.usersService.updateUser(user.id, {
+        currentHashedRefreshToken: hashedRefreshToken,
+      });
+
+      return { accessToken, refreshToken };
     }
 
     throw new UnauthorizedException(LOGIN_ERROR_MESSAGE);

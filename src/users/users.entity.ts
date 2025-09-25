@@ -23,6 +23,10 @@ export class User {
   @Exclude()
   passwordHash: string;
 
+  @Column({ nullable: true })
+  @Exclude()
+  currentHashedRefreshToken?: string;
+
   @Column({ default: 1000 })
   elo: number;
 
