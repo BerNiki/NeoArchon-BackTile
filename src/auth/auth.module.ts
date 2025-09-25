@@ -5,6 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/users.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { UsersService } from 'src/users/users.service';
+import { JwtStrategy } from './jwt/jwt.strategy';
+import { JwtRefreshStrategy } from './jwt/jwt.refreshStrategy';
 
 @Module({
   imports: [
@@ -12,10 +15,14 @@ import { JwtModule } from '@nestjs/jwt';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'willhideinEnv',
-      signOptions: { expiresIn: 3600 },
+      signOptions: { expiresIn: '15m' },
+    }),
+    JwtModule.register({
+      secret: 'willhideinEnvrefresh',
+      signOptions: { expiresIn: '2d' },
     }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, UsersService, JwtStrategy, JwtRefreshStrategy],
   controllers: [AuthController],
   exports: [PassportModule],
 })
