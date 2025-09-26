@@ -20,6 +20,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { passwordHasher } from './utils/passwordHasher';
+import { JwtSecrets } from 'src/config/config.service';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +29,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @InjectRepository(User)
     private readonly usersRepo: Repository<User>,
+    private readonly jwtSercets: JwtSecrets,
   ) {}
 
   async refreshTokens(user: User) {
@@ -36,12 +38,12 @@ export class AuthService {
         username: user.username,
         email: user.email,
       },
-      { expiresIn: '15m' },
+      { expiresIn: this.jwtSercets.jwtExpiration },
     );
 
     const newRefreshToken = this.jwtService.sign(
       { username: user.username, email: user.email },
-      { expiresIn: '7d' },
+      { expiresIn: this.jwtSercets.jwtRefreshExpiration },
     );
 
     const hashedNewRefreshToken = await bcrypt.hash(newRefreshToken, 10);
@@ -120,11 +122,11 @@ export class AuthService {
       };
 
       const accessToken: string = this.jwtService.sign(payload, {
-        expiresIn: '15m',
+        expiresIn: this.jwtSercets.jwtExpiration,
       });
       const refreshToken: string = this.jwtService.sign(payload, {
-        secret: 'willhideinEnvrefresh',
-        expiresIn: '2d',
+        secret: this.jwtSercets.jwtRefreshSecret,
+        expiresIn: this.jwtSercets.jwtRefreshExpiration,
       });
 
       const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
