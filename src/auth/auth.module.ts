@@ -8,19 +8,32 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { JwtRefreshStrategy } from './jwt/jwt.refreshStrategy';
+import { JwtConfigModule } from 'src/config/config.module';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: 'willhideinEnv',
-      signOptions: { expiresIn: '15m' },
+    JwtModule.registerAsync({
+      imports: [JwtConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRATION') },
+      }),
     }),
-    JwtModule.register({
-      secret: 'willhideinEnvrefresh',
-      signOptions: { expiresIn: '2d' },
+    JwtModule.registerAsync({
+      imports: [JwtConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_REFRESH_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_REFRESH_EXPIRATION'),
+        },
+      }),
     }),
+    JwtConfigModule,
   ],
   providers: [AuthService, UsersService, JwtStrategy, JwtRefreshStrategy],
   controllers: [AuthController],
