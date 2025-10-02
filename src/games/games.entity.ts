@@ -16,7 +16,7 @@ export class Game {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ default: GameStatusEnum.ongoing, enum: GameStatusEnum })
+  @Column({ default: GameStatusEnum.waitingForPlayers, enum: GameStatusEnum })
   status: GameStatusEnum;
 
   @Column('jsonb')
