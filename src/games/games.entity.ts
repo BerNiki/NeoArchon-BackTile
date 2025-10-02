@@ -16,14 +16,11 @@ export class Game {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ default: GameStatusEnum.waitingForPlayers, enum: GameStatusEnum })
   status: GameStatusEnum;
 
   @Column('jsonb')
   board_state: any;
-
-  @Column({ default: GameStatusEnum.ongoing, enum: GameStatusEnum })
-  resolution: GameStatusEnum;
 
   @ManyToOne(() => User, { nullable: true })
   turnUser: User;
@@ -31,8 +28,11 @@ export class Game {
   @OneToMany(() => Move, (move: Move) => move.game)
   moves: Move[];
 
-  @OneToMany(() => GamePlayer, (gp) => gp.game)
+  @OneToMany(() => GamePlayer, (gp) => gp.game, { cascade: true })
   players: GamePlayer[];
+
+  @Column('jsonb')
+  gameSetup: any;
 
   @CreateDateColumn()
   created_at: Date;
