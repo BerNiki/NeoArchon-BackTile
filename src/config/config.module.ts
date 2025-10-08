@@ -1,7 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { JwtSecrets } from './config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigController } from './config.controller';
 
+@Global()
 @Module({
   imports: [ConfigModule],
   providers: [
@@ -13,6 +15,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     },
   ],
-  exports: [JwtSecrets],
+  exports: [JwtSecrets, ConfigService],
+  controllers: [ConfigController],
 })
 export class JwtConfigModule {}

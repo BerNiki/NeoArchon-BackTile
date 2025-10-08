@@ -72,6 +72,8 @@ npm run start:dev
 
 The application will be listening on the port specified in your `.env` file (default: 3000).
 
+Open: http://localhost:3000/config/health
+
 ---
 
 ## 📂 Project Structure Overview

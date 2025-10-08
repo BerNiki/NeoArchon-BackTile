@@ -14,10 +14,10 @@ export class JwtSecrets {
   }
 
   get jwtExpiration(): string {
-    return this.configService.get<string>('JWT_EXPIRATION')!;
+    return this.configService.get<string>('JWT_EXPIRES_IN')!;
   }
 
   get jwtRefreshExpiration(): string {
-    return this.configService.get<string>('JWT_REFRESH_EXPIRATION')!;
+    return this.configService.get<string>('JWT_REFRESH_EXPIRES_IN')!;
   }
 }
