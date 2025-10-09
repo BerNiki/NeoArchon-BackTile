@@ -4,8 +4,11 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { GamesModule } from './games/games.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtConfigModule } from './config/config.module';
+import {
+  ConfigModule as ConfigModuleClass,
+  ConfigService,
+} from '@nestjs/config';
+import { ConfigModule } from './config/config.module';
 import * as crypto from 'crypto';
 import Joi from 'joi';
 
@@ -18,7 +21,7 @@ import Joi from 'joi';
     AuthModule,
     UsersModule,
     GamesModule,
-    ConfigModule.forRoot({
+    ConfigModuleClass.forRoot({
       isGlobal: true,
       envFilePath: '.env',
       validationSchema: Joi.object({
@@ -32,7 +35,7 @@ import Joi from 'joi';
       validationOptions: { abortEarly: false },
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModuleClass],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
@@ -42,7 +45,7 @@ import Joi from 'joi';
         logging: true,
       }),
     }),
-    JwtConfigModule,
+    ConfigModule,
   ],
   providers: [ConfigService],
 })

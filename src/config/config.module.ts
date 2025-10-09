@@ -1,21 +1,28 @@
 import { Global, Module } from '@nestjs/common';
-import { JwtSecrets } from './config.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from './config.service';
+import {
+  ConfigModule as ConfigModuleClass,
+  ConfigService as ConfigServiceClass,
+} from '@nestjs/config';
 import { ConfigController } from './config.controller';
+import { DataSource } from 'typeorm';
 
 @Global()
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModuleClass],
   providers: [
     {
-      provide: JwtSecrets,
-      useFactory: (configService: ConfigService) => {
-        return new JwtSecrets(configService);
+      provide: ConfigService,
+      useFactory: (
+        configService: ConfigServiceClass,
+        dataSource: DataSource,
+      ) => {
+        return new ConfigService(configService, dataSource);
       },
       inject: [ConfigService],
     },
   ],
-  exports: [JwtSecrets, ConfigService],
+  exports: [ConfigService, ConfigServiceClass],
   controllers: [ConfigController],
 })
-export class JwtConfigModule {}
+export class ConfigModule {}
