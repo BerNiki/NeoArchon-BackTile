@@ -6,12 +6,14 @@ export const signToken = async (
   privateKey: CryptoKey,
   kid: string,
   ttlSeconds: number,
+  issuer: string,
+  audience: string,
 ) =>
   await new SignJWT(payload)
     .setProtectedHeader({ alg: 'edDSA', kid })
     .setIssuedAt()
-    .setIssuer(process.env.JWT_ISS!)
-    .setAudience(process.env.JWT_AUD!)
+    .setIssuer(issuer)
+    .setAudience(audience)
     .setExpirationTime(`${ttlSeconds}s`)
     .setJti(UUID())
     .sign(privateKey);
