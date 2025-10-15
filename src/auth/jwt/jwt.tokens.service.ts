@@ -14,6 +14,6 @@ export const signToken = async (
     .setIssuedAt()
     .setIssuer(issuer)
     .setAudience(audience)
-    .setExpirationTime(`${ttlSeconds}s`)
+    .setExpirationTime(`${ttlSeconds}`)
     .setJti(UUID())
     .sign(privateKey);
