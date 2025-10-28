@@ -5,6 +5,7 @@ import { UsersService } from 'src/users/users.service';
 import { JwtPayload } from './jwt.payload.interface';
 import { User } from 'src/users/users.entity';
 import { ConfigService } from '@nestjs/config';
+import { Request } from 'express';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -14,7 +15,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   ) {
     super({
       secretOrKey: configService.get<string>('JWT_SECRET')!,
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req: Request) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+          return req?.cookies?.accessToken || null;
+        },
+      ]),
       ignoreExpiration: false,
     });
   }
