@@ -6,10 +6,6 @@ import { GamesModule } from './games/games.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtConfigModule } from './config/config.module';
-import * as crypto from 'crypto';
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-(global as any).crypto = crypto;
 
 @Module({
   imports: [
