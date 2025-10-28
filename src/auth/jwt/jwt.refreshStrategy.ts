@@ -4,7 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/users.entity';
 import { JwtPayload } from './jwt.payload.interface';
-import * as bcrypt from 'bcrypt';
+import { verifyPassword } from '../utils/passwordHasher';
 import {
   REFRESH_TOKEN_INVALID,
   REFRESH_TOKEN_MISSING,
@@ -40,9 +40,9 @@ export class JwtRefreshStrategy extends PassportStrategy(
     const authHeader = req.headers.authorization;
     const rawToken = authHeader.split(' ')[1];
 
-    const tokenMatches = await bcrypt.compare(
-      rawToken,
+    const tokenMatches = await verifyPassword(
       user.currentHashedRefreshToken,
+      rawToken,
     );
 
     if (!tokenMatches) {

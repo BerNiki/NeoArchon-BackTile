@@ -1,0 +1,23 @@
+sequenceDiagram
+  participant FE as Frontend (browser)
+  participant API as API (AuthService)
+  participant DB as DB (refresh_tokens)
+
+  FE->>API: POST /auth/signin {email,password}
+  API->>AuthService: validate credentials
+  AuthService-->>DB: store jti_hash, expires_at
+  API-->>FE: set-cookie(refreshToken), return accessToken
+
+  FE->>API: GET /protected (Authorization: Bearer AT)
+  API->>AuthService: verify AT via JWKS -> ok
+
+  Note over FE,API: When AT expires
+  FE->>API: POST /auth/refresh (cookie: RT)
+  API->>AuthService: verify RT signature, get jti
+  API->>DB: find matching jti_hash -> if match accept
+  AuthService-->>DB: insert new jti_hash; revoke/delete old
+  API-->>FE: set-cookie(new RT), return new AT
+
+  FE->>API: POST /auth/logout
+  API->>DB: revoke/delete RT records for device/user
+  API-->>FE: clear cookies

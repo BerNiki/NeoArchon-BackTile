@@ -13,7 +13,7 @@ import {
 import { User } from 'src/users/users.entity';
 import { UsersService } from 'src/users/users.service';
 import { SignInDto, SignUpDto } from './dto/auth-credentials.dto';
-import * as bcrypt from 'bcrypt';
+import { verifyPassword } from './utils/passwordHasher';
 import { JwtPayload } from './jwt/jwt.payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { UpdatePasswordDto } from './dto/update-password.dto';
@@ -21,6 +21,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { passwordHasher } from './utils/passwordHasher';
 import { JwtSecrets } from 'src/config/config.service';
+import { v4 as uuid } from 'uuid';
+import { signToken } from './jwt/jwt.tokens.service';
+import argon2 from 'argon2';
 
 @Injectable()
 export class AuthService {
@@ -46,7 +49,7 @@ export class AuthService {
       { expiresIn: this.jwtSercets.jwtRefreshExpiration },
     );
 
-    const hashedNewRefreshToken = await bcrypt.hash(newRefreshToken, 10);
+    const hashedNewRefreshToken = await passwordHasher(newRefreshToken);
     await this.usersService.updateUser(user.id, {
       currentHashedRefreshToken: hashedNewRefreshToken,
     });
@@ -94,11 +97,10 @@ export class AuthService {
     const { oldPassword, newPassword } = updatePasswordDto;
     const { id, passwordHash } = user;
 
-    if (!(await bcrypt.compare(oldPassword, passwordHash))) {
+    if (!(await verifyPassword(passwordHash, oldPassword))) {
       throw new UnauthorizedException(INCORRECT_PASSWORD_ERROR_MESSAGE);
     }
-
-    if (await bcrypt.compare(newPassword, passwordHash)) {
+    if (await verifyPassword(passwordHash, newPassword)) {
       throw new ConflictException(NEW_PASSWORD_ERROR_MESSAGE);
     }
 
@@ -115,23 +117,35 @@ export class AuthService {
     const { password, email } = signInDto;
     const user = await this.usersService.findByEmail(email);
 
-    if (await bcrypt.compare(password, user.passwordHash)) {
+    if (await verifyPassword(user.passwordHash, password)) {
       const payload: JwtPayload = {
         username: user.username,
         email: user.email,
       };
 
+      const privateKey = await this.jwtSercets.getPrivateKey();
+      const kid = this.jwtSercets.kid;
+      const rtSeconds = this.jwtSercets.jwtRefreshExpiration;
+
+      const jti = uuid();
+      const refreshToken = await signToken(
+        { sub: user.id },
+        privateKey,
+        kid,
+        Number(rtSeconds),
+        this.jwtSercets.issuer,
+        this.jwtSercets.audience,
+      );
+      const jtiHash = await argon2.hash(jti);
+
       const accessToken: string = this.jwtService.sign(payload, {
         expiresIn: this.jwtSercets.jwtExpiration,
       });
-      const refreshToken: string = this.jwtService.sign(payload, {
-        secret: this.jwtSercets.jwtRefreshSecret,
-        expiresIn: this.jwtSercets.jwtRefreshExpiration,
-      });
 
-      const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+      const hashedRefreshToken = await passwordHasher(refreshToken);
 
       await this.usersService.updateUser(user.id, {
+        jti: jtiHash,
         currentHashedRefreshToken: hashedRefreshToken,
       });
 

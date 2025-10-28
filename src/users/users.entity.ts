@@ -23,6 +23,10 @@ export class User {
   @Exclude()
   passwordHash: string;
 
+  @Column()
+  @Exclude()
+  jti: string;
+
   @Column({ nullable: true })
   @Exclude()
   currentHashedRefreshToken?: string;

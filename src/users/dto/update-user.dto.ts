@@ -28,4 +28,9 @@ export class UpdateUserDto {
   @IsString()
   @Exclude()
   currentHashedRefreshToken?: string;
+
+  @IsOptional()
+  @IsString()
+  @Exclude()
+  jti?: string;
 }
