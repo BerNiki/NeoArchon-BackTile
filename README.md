@@ -72,33 +72,55 @@ npm run start:dev
 
 The application will be listening on the port specified in your `.env` file (default: 3000).
 
+## OR:
+
+# 🧱 NeoArchon Backend (NestJS + PostgreSQL)
+
+## 🚀 Run locally with Docker
+
+### Prerequisites
+
+- Docker and Docker Compose installed
+
+### 1️⃣ Build and start all containers
+
+```bash
+docker-compose up --build
+
 ---
+
+# Important NOTE:
+
+### use this address if you choose docker DATABASE_URL=postgres://postgres:postgres@postgres:5432/archon in env.
+### also crypto declaration requirement in app.module is dependent on your node version.
 
 ## 📂 Project Structure Overview
 
 The application follows the standard NestJS modular pattern, ensuring high maintainability and scalability.
 
 ```
+
 src/
-├── app.module.ts             # Root Module
-├── main.ts                   # App entry point
-├── transform.interceptor.ts  # Global response shaping
-├── auth/                     # User authentication (JWT, Passports, Strategies)
-│   ├── auth.controller.ts    # REST endpoints: signup, signin, refresh, logout
-│   ├── auth.service.ts       # Core logic: password hashing, token generation
-│   └── jwt/                  # Passport Strategies (jwt, jwt-refresh)
-├── config/                   # Global configuration service for secrets
-├── CONSTS/                   # Centralized error messages and string constants
-├── enums/                    # Game and Player status enums
-├── games/                    # Core Game logic (creation, joining, state management)
-│   ├── games.entity.ts       # TypeORM entity for the Game board
-│   └── games.service.ts      # Logic for creating and joining games
-├── moves/                    # Future Move validation and history tracking
-└── users/                    # User management (profile, update, delete, decorators)
-    ├── users.entity.ts       # TypeORM entity for User data
-    ├── users.controller.ts   # REST endpoints: profile management
-    └── get-user.decorator.ts # Custom decorator to retrieve the authenticated user
-```
+├── app.module.ts # Root Module
+├── main.ts # App entry point
+├── transform.interceptor.ts # Global response shaping
+├── auth/ # User authentication (JWT, Passports, Strategies)
+│ ├── auth.controller.ts # REST endpoints: signup, signin, refresh, logout
+│ ├── auth.service.ts # Core logic: password hashing, token generation
+│ └── jwt/ # Passport Strategies (jwt, jwt-refresh)
+├── config/ # Global configuration service for secrets
+├── CONSTS/ # Centralized error messages and string constants
+├── enums/ # Game and Player status enums
+├── games/ # Core Game logic (creation, joining, state management)
+│ ├── games.entity.ts # TypeORM entity for the Game board
+│ └── games.service.ts # Logic for creating and joining games
+├── moves/ # Future Move validation and history tracking
+└── users/ # User management (profile, update, delete, decorators)
+├── users.entity.ts # TypeORM entity for User data
+├── users.controller.ts # REST endpoints: profile management
+└── get-user.decorator.ts # Custom decorator to retrieve the authenticated user
+
+````
 
 ---
 
@@ -126,7 +148,7 @@ This project enforces strict code quality and formatting rules to maintain consi
 ```bash
 npm run format # Automatically format all .ts files
 npm run lint   # Check for linting errors and attempt to fix them
-```
+````
 
 ---
 
