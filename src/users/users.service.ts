@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
-import { USER_NOT_FOUND } from 'src/CONSTS/userServiceMessages';
+import { USER_NOT_FOUND } from 'src/games/userServiceMessages';
 import {
   EMAIL_ALREADY_EXIST_ERROR_MESSAGE,
   USERNAME_ALREADY_EXIST_ERROR_MESSAGE,
