@@ -72,20 +72,7 @@ npm run start:dev
 
 The application will be listening on the port specified in your `.env` file (default: 3000).
 
-## OR:
-
-# 🧱 NeoArchon Backend (NestJS + PostgreSQL)
-
-## 🚀 Run locally with Docker
-
-### Prerequisites
-
-- Docker and Docker Compose installed
-
-### 1️⃣ Build and start all containers
-
-```bash
-docker-compose up --build
+Open: http://localhost:3000/config/health
 
 ---
 
