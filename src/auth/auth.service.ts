@@ -20,10 +20,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { passwordHasher } from './utils/passwordHasher';
-import { JwtSecrets } from 'src/config/config.service';
-import { v4 as uuid } from 'uuid';
-import { signToken } from './jwt/jwt.tokens.service';
-import argon2 from 'argon2';
+import { ConfigService } from 'src/config/config.service';
 
 @Injectable()
 export class AuthService {
@@ -32,24 +29,23 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @InjectRepository(User)
     private readonly usersRepo: Repository<User>,
-    private readonly jwtSercets: JwtSecrets,
+    private readonly ConfigService: ConfigService,
   ) {}
 
   async refreshTokens(user: User) {
-    const newAccessToken = this.jwtService.sign(
-      {
-        username: user.username,
-        email: user.email,
-      },
-      { expiresIn: this.jwtSercets.jwtExpiration },
-    );
+    const payload: JwtPayload = {
+      username: user.username,
+      email: user.email,
+    };
 
-    const newRefreshToken = this.jwtService.sign(
-      { username: user.username, email: user.email },
-      { expiresIn: this.jwtSercets.jwtRefreshExpiration },
-    );
+    const newAccessToken = this.jwtService.sign(payload);
+    const newRefreshToken = this.jwtService.sign(payload, {
+      secret: this.ConfigService.jwtRefreshSecret,
+      expiresIn: this.ConfigService.jwtRefreshExpiration,
+    });
 
-    const hashedNewRefreshToken = await passwordHasher(newRefreshToken);
+    const hashedNewRefreshToken = await bcrypt.hash(newRefreshToken, 10);
+
     await this.usersService.updateUser(user.id, {
       currentHashedRefreshToken: hashedNewRefreshToken,
     });
@@ -123,23 +119,10 @@ export class AuthService {
         email: user.email,
       };
 
-      const privateKey = await this.jwtSercets.getPrivateKey();
-      const kid = this.jwtSercets.kid;
-      const rtSeconds = this.jwtSercets.jwtRefreshExpiration;
-
-      const jti = uuid();
-      const refreshToken = await signToken(
-        { sub: user.id },
-        privateKey,
-        kid,
-        Number(rtSeconds),
-        this.jwtSercets.issuer,
-        this.jwtSercets.audience,
-      );
-      const jtiHash = await argon2.hash(jti);
-
-      const accessToken: string = this.jwtService.sign(payload, {
-        expiresIn: this.jwtSercets.jwtExpiration,
+      const accessToken: string = this.jwtService.sign(payload);
+      const refreshToken: string = this.jwtService.sign(payload, {
+        secret: this.ConfigService.jwtRefreshSecret,
+        expiresIn: this.ConfigService.jwtRefreshExpiration,
       });
 
       const hashedRefreshToken = await passwordHasher(refreshToken);

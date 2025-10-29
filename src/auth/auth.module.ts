@@ -8,7 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { JwtRefreshStrategy } from './jwt/jwt.refreshStrategy';
-import { JwtConfigModule } from 'src/config/config.module';
+import { ConfigModule } from 'src/config/config.module';
 import { ConfigService } from '@nestjs/config';
 
 @Global()
@@ -17,24 +17,12 @@ import { ConfigService } from '@nestjs/config';
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
-      imports: [JwtConfigModule],
-      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: { expiresIn: configService.get<string>('JWT_EXPIRATION') },
       }),
     }),
-    JwtModule.registerAsync({
-      imports: [JwtConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_REFRESH_SECRET'),
-        signOptions: {
-          expiresIn: configService.get<string>('JWT_REFRESH_EXPIRATION'),
-        },
-      }),
-    }),
-    JwtConfigModule,
+    ConfigModule,
   ],
   providers: [AuthService, UsersService, JwtStrategy, JwtRefreshStrategy],
   controllers: [AuthController],
