@@ -10,7 +10,7 @@ import { GetUser } from './get-user.decorator';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { USER_DELETED } from 'src/CONSTS/userServiceMessages';
+import { USER_DELETED } from 'src/games/userServiceMessages';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.authGuards';
 
 @UseGuards(JwtAuthGuard)

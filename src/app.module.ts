@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MovesModule } from './moves/moves.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
@@ -49,4 +49,8 @@ import Joi from 'joi';
   ],
   providers: [ConfigService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorrelationIdMiddleware).forRoutes('*');
+  }
+}
