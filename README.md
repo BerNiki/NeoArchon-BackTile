@@ -43,16 +43,24 @@ npm install
 
 ### 2\. Environment Setup
 
-Create a file named **`.env`** in the project root with the required environment variables.
+Create a file named **`.env`** in the project root with the required environment variables. To create private/public keys run the included genKeys.js with node genKeys.js.
 
 | Variable                 | Description                            | Example Value                           |
 | :----------------------- | :------------------------------------- | :-------------------------------------- |
 | `PORT`                   | Server port for the NestJS app         | `3000`                                  |
 | `DATABASE_URL`           | Connection string for your Postgres DB | `postgres://user:pass@host:5432/dbname` |
-| `JWT_SECRET`             | Secret for short-lived access tokens   | `my-access-secret-key-123`              |
-| `JWT_EXPIRATION`         | Expiration time for access tokens      | `1h`                                    |
+| `NODE_ENV`               | Name of environment to use             | `production`                            |
+| `COOKIE_PATH`            | Location of cookie                     | `./`                                    |
+| `COOKIE_SAMESITE`        | Protocol of cookie usage               | `lax`                                   |
+| `COOKIE_SECURE`          | Boolean for cookie security            | `true`                                  |
+| `COOKIE_DOMAIN`          | Domain of cookie                       | `your.domain.com`                       |
+| `JWT_KID`                | JWT key id                             | `your-key-id`                           |
+| `JWT_AUD`                | JWT audience                           | `your-audience`                         |
+| `JWT_ISS`                | JWT issuer                             | `your-issuer`                           |
 | `JWT_REFRESH_SECRET`     | Secret for long-lived refresh tokens   | `my-refresh-secret-key-456`             |
 | `JWT_REFRESH_EXPIRATION` | Expiration time for refresh tokens     | `7d`                                    |
+| `JWT_KEY_PRIVATE_PATH`   | Path to your private JWT key           | `/keys/private.key`                     |
+| `JWT_KEY_PUBLIC_PATH`    | Path to your public JWT key            | `/keys/public.key`                      |
 
 ### 3\. Running the App
 
@@ -72,7 +80,22 @@ npm run start:dev
 
 The application will be listening on the port specified in your `.env` file (default: 3000).
 
-Open: http://localhost:3000/config/health
+Open: https://localhost:3000/config/health
+
+## OR:
+
+# 🧱 NeoArchon Backend (NestJS + PostgreSQL)
+
+## 🚀 Run locally with Docker
+
+### Prerequisites
+
+- Docker and Docker Compose installed
+
+### 1️⃣ Build and start all containers
+
+```bash
+docker-compose up --build
 
 ---
 

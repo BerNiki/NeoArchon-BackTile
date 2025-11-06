@@ -1,19 +1,23 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { MovesModule } from './moves/moves.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { GamesModule } from './games/games.module';
+import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {
-  ConfigModule as ConfigModuleClass,
-  ConfigService,
-} from '@nestjs/config';
-import { ConfigModule } from './config/config.module';
-import * as crypto from 'crypto';
-import Joi from 'joi';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-(global as any).crypto = crypto;
+import { LoggerModule } from 'nestjs-pino';
+
+import { MovesModule } from './api/moves/moves.module';
+import { AuthModule } from './api/auth/auth.module';
+import { UsersModule } from './api/users/users.module';
+import { GamesModule } from './api/games/games.module';
+import { ConfigModule } from './config/config.module';
+import { HealthModule } from './api/health/health.module';
+
+import { CorrelationIdMiddleware } from './common/middleware/correlation-id.middleware';
+
+import {
+  CONFIG_MODULE_OPTIONS,
+  LOGGER_MODULE_OPTIONS,
+  TYPEORM_MODULE_OPTIONS,
+} from './shared/consts/app-module-consts/appModuleOptions';
 
 @Module({
   imports: [
@@ -21,33 +25,12 @@ import Joi from 'joi';
     AuthModule,
     UsersModule,
     GamesModule,
-    ConfigModuleClass.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-      validationSchema: Joi.object({
-        PORT: Joi.number().default(3000),
-        DATABASE_URL: Joi.string().required(),
-        JWT_SECRET: Joi.string().min(12).required(),
-        JWT_REFRESH_SECRET: Joi.string().min(12).required(),
-        JWT_EXPIRES_IN: Joi.string().default('15m'),
-        JWT_REFRESH_EXPIRES_IN: Joi.string().default('2d'),
-      }),
-      validationOptions: { abortEarly: false },
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModuleClass],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get<string>('DATABASE_URL'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
-        logging: true,
-      }),
-    }),
     ConfigModule,
+    NestConfigModule.forRoot(CONFIG_MODULE_OPTIONS),
+    TypeOrmModule.forRootAsync(TYPEORM_MODULE_OPTIONS),
+    LoggerModule.forRoot(LOGGER_MODULE_OPTIONS),
+    HealthModule,
   ],
-  providers: [ConfigService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,46 +1,28 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+
+import { Logger } from 'nestjs-pino';
+import cookieParser from 'cookie-parser';
+
 import { AppModule } from './app.module';
+
+import { TransformInterceptor } from './common/interceptors/transformInterceptor/transform.interceptor';
+import { HttpExceptionFilter } from './common/exception-filter/http-exception.filter';
+
 import {
-  BadRequestException,
-  ValidationError,
-  ValidationPipe,
-} from '@nestjs/common';
-import { TransformInterceptor } from './transform.interceptor';
-import { HttpExceptionFilter } from './utils/http-exception.filter';
+  corsOptions,
+  globalValidationPipeOptions,
+} from './shared/consts/app-config-consts/app-config-options/appConfigOptions';
+import { httpsOptions } from './shared/consts/app-config-consts/https-options-loader/https-options-loader';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { httpsOptions });
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-      exceptionFactory: (errors: ValidationError[]) => {
-        const flat = errors.flatMap((e) =>
-          e.constraints
-            ? Object.values(e.constraints).map((msg) => ({
-                path: e.property,
-                message: msg,
-              }))
-            : [],
-        );
-        return new BadRequestException({
-          status: 400,
-          code: 'VAL_001',
-          message: 'Invalid request body',
-          errors: flat,
-        });
-      },
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe(globalValidationPipeOptions));
   app.useGlobalInterceptors(new TransformInterceptor());
-  app.enableCors({
-    origin: ['http://localhost:3333', 'http://localhost:5173'],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  });
+  app.useLogger(app.get(Logger));
+  app.enableCors(corsOptions);
+  app.use(cookieParser());
   await app.listen(process.env.PORT!, '0.0.0.0');
 }
 void bootstrap();
