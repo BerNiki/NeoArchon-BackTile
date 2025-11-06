@@ -10,7 +10,7 @@ import {
 export class HealthController {
   constructor(private readonly healthService: HealthService) {}
 
-  @Get('health')
+  @Get('')
   liveliness(): LivenessResponseI {
     return this.healthService.getLiveness();
   }

@@ -14,16 +14,16 @@ import { USER_DELETED } from 'src/api/users/consts/userServiceMessages';
 import { JwtGuard } from 'src/api/auth/guards/jwt.guard';
 
 @UseGuards(JwtGuard)
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('profile')
+  @Get('')
   getProfile(@GetUser() user: User): User {
     return user;
   }
 
-  @Patch('profile')
+  @Patch('')
   updateProfile(
     @GetUser() user: User,
     @Body() updateUserDto: UpdateUserDto,
@@ -31,7 +31,7 @@ export class UsersController {
     return this.usersService.updateUser(user.id, updateUserDto);
   }
 
-  @Delete('profile')
+  @Delete('')
   async deleteProfile(@GetUser() user: User): Promise<{ message: string }> {
     await this.usersService.deleteUser(user.id);
     return { message: USER_DELETED };
