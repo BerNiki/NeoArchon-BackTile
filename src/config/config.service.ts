@@ -1,33 +1,30 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService as ConfigServiceClass } from '@nestjs/config';
-import {
-  DbStatusEnum,
-  DbStatusResponseI,
-} from 'src/interfaces/config.interfaces';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService as NestConfigService } from '@nestjs/config';
+import { readFileSync } from 'fs';
 import { DataSource } from 'typeorm';
 
 @Injectable()
 export class ConfigService {
   constructor(
-    private readonly configService: ConfigServiceClass,
+    private readonly configService: NestConfigService,
     private readonly dataSource: DataSource,
+    @Inject('JWT_KEY_PAIR')
+    private readonly keyPair: CryptoKeyPair,
   ) {}
 
-  async getPrivateKey(): Promise<CryptoKey> {
-    const keyData = new TextEncoder().encode(
-      this.configService.get<string>('JWT_PRIVATE_KEY'),
-    );
-    return crypto.subtle.importKey(
-      'raw',
-      keyData,
-      { name: 'Ed25519', namedCurve: 'Ed25519' },
-      true,
-      ['sign'],
-    );
+  getPrivateKey(): CryptoKey {
+    const { privateKey } = this.keyPair;
+    return privateKey;
   }
 
-  get publicKey(): string {
-    return this.configService.get<string>('JWT_PUBLIC_KEY')!;
+  getPublicKeyAsString(): string {
+    const publicKeyPath = process.env.JWT_KEY_PUBLIC_PATH;
+    if (!publicKeyPath) {
+      throw new Error(
+        'JWT_KEY_PUBLIC_PATH is not set in environment variables',
+      );
+    }
+    return readFileSync(publicKeyPath, 'utf-8');
   }
 
   get kid(): string {
@@ -42,30 +39,19 @@ export class ConfigService {
   }
 
   get jwtExpiration(): string {
-    return this.configService.get<string>('JWT_EXPIRES_IN')!;
+    return this.configService.get<string>('JWT_EXPIRATION')!;
   }
   get jwtRefreshExpiration(): string {
-    return this.configService.get<string>('JWT_REFRESH_EXPIRES_IN')!;
+    return this.configService.get<string>('JWT_REFRESH_EXPIRATION')!;
   }
 
-  getLiveness() {
+  get tokenOptions() {
     return {
-      ok: true,
-      port: `Backend listening on: ${this.configService.get<number>('PORT')}`,
-      uptime: process.uptime(),
-      timestamp: new Date().toISOString(),
+      privateKey: this.getPrivateKey(),
+      kid: this.kid,
+      jwtExpiration: this.jwtExpiration,
+      issuer: this.issuer,
+      audience: this.audience,
     };
-  }
-
-  async getReadiness(): Promise<DbStatusResponseI> {
-    try {
-      await this.dataSource.query('SELECT 1');
-      return { db: DbStatusEnum.UP };
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e: unknown) {
-      return {
-        db: DbStatusEnum.DOWN,
-      };
-    }
   }
 }

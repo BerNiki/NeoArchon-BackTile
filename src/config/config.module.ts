@@ -1,28 +1,25 @@
 import { Global, Module } from '@nestjs/common';
-import { ConfigService } from './config.service';
 import {
-  ConfigModule as ConfigModuleClass,
-  ConfigService as ConfigServiceClass,
+  ConfigModule as NestConfigModule,
+  ConfigService as NestConfigService,
 } from '@nestjs/config';
-import { ConfigController } from './config.controller';
+import { ConfigService } from './config.service';
 import { DataSource } from 'typeorm';
 
 @Global()
 @Module({
-  imports: [ConfigModuleClass],
+  imports: [NestConfigModule],
   providers: [
     {
       provide: ConfigService,
       useFactory: (
-        configService: ConfigServiceClass,
+        nestConfig: NestConfigService,
         dataSource: DataSource,
-      ) => {
-        return new ConfigService(configService, dataSource);
-      },
-      inject: [ConfigService],
+        keyPair: CryptoKeyPair,
+      ) => new ConfigService(nestConfig, dataSource, keyPair),
+      inject: [NestConfigService, DataSource, 'JWT_KEY_PAIR'],
     },
   ],
-  exports: [ConfigService, ConfigServiceClass],
-  controllers: [ConfigController],
+  exports: [ConfigService],
 })
 export class ConfigModule {}

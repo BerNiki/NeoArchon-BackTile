@@ -14,11 +14,22 @@ services:
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
       - DATABASE_NAME=archon
+      - PORT=3000
+      - COOKIE_SECURE=true
+      - COOKIE_SAMESITE=none
+      - COOKIE_PATH=/
+      - NODE_ENV=development
+      - JWT_ISS=http://localhost:3333
+      - JWT_AUD=your-audience
+      - JWT_EXPIRATION=900
+      - JWT_REFRESH_EXPIRATION=1209600
+      - JWT_KID=your-key-id
+      - JWT_KEY_PRIVATE_PATH=./secrets/token-keys/private.key
+      - JWT_KEY_PUBLIC_PATH=./secrets/token-keys/public.key
+
     volumes:
       - .:/app
-      - /app/node_modules
     command: npm run start:dev
-
   postgres:
     image: postgres:16-alpine
     container_name: archonDb
