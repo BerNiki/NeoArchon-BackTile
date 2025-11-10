@@ -14,6 +14,8 @@ import {
   globalValidationPipeOptions,
 } from './shared/consts/app-config-consts/app-config-options/appConfigOptions';
 import { httpsOptions } from './shared/consts/app-config-consts/https-options-loader/https-options-loader';
+import { SwaggerModule } from '@nestjs/swagger';
+import { swaggerConfig } from './shared/consts/app-config-consts/swagger-config/swagger-config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { httpsOptions });
@@ -23,6 +25,11 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   app.enableCors(corsOptions);
   app.use(cookieParser());
+
+  const documentFactory = () =>
+    SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api', app, documentFactory);
+
   await app.listen(process.env.PORT!, '0.0.0.0');
 }
 void bootstrap();

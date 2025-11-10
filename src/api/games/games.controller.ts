@@ -7,12 +7,12 @@ import { CreateGameDto } from './dto/create-game.dto';
 import { JoinGameDto } from './dto/join-game.dto';
 import { JwtGuard } from 'src/api/auth/guards/jwt.guard';
 
-@Controller('games')
+@Controller('game')
 @UseGuards(JwtGuard)
 export class GamesController {
   constructor(private readonly gamesService: GamesService) {}
 
-  @Post('game')
+  @Post('create')
   createGame(
     @GetUser() player: User,
     @Body() createGameDto: CreateGameDto,
@@ -24,7 +24,7 @@ export class GamesController {
     );
   }
 
-  @Patch('game')
+  @Patch('join')
   joinGame(
     @GetUser() player: User,
     @Body() joinGameDto: JoinGameDto,
