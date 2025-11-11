@@ -8,6 +8,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import type { MoveDataInterface } from '../interface/move.interface';
 
 @Entity('moves')
 export class Move {
@@ -23,7 +24,7 @@ export class Move {
   user: User;
 
   @Column({ type: 'jsonb' })
-  move_data: { from: string; to: number };
+  move_data: MoveDataInterface;
 
   @CreateDateColumn()
   createdAt: Date;

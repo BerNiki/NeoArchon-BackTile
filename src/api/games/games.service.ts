@@ -6,6 +6,7 @@ import { Game } from './entities/games.entity';
 import { Repository } from 'typeorm';
 import { GamePlayer } from './entities/gamePlayers.entity';
 import { GAME_NOT_FOUND_ERROR_MESSAGE } from 'src/api/games/consts/gameErrorMessage';
+import { BaseBoardLayout } from './consts/baseGameSetup';
 
 @Injectable()
 export class GamesService {
@@ -20,25 +21,23 @@ export class GamesService {
     return this.gamesRepo.findOneBy({ id: gameId });
   }
 
-  async createGame(
-    player: User,
-    gameSetup: any,
-    playerRole: PlayerRolesEnum,
-  ): Promise<Game> {
+  async createGame(player: User, playerRole: PlayerRolesEnum): Promise<Game> {
     const newGame = this.gamesRepo.create({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      gameSetup,
       moves: [],
+      board_state: BaseBoardLayout,
     });
+
+    await this.gamesRepo.save(newGame);
+
     const gamePlayer = this.gamePlayerRepo.create({
       user: player,
       role: playerRole,
       game: newGame,
     });
 
-    newGame.players = [gamePlayer];
+    await this.gamePlayerRepo.save(gamePlayer);
 
-    await this.gamesRepo.save(newGame);
+    newGame.players = [gamePlayer];
 
     return newGame;
   }

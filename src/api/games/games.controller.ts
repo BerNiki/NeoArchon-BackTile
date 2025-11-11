@@ -17,11 +17,7 @@ export class GamesController {
     @GetUser() player: User,
     @Body() createGameDto: CreateGameDto,
   ): Promise<Game> {
-    return this.gamesService.createGame(
-      player,
-      createGameDto.gameSetup,
-      createGameDto.playerRole,
-    );
+    return this.gamesService.createGame(player, createGameDto.playerRole);
   }
 
   @Patch('game')
