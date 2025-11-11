@@ -31,7 +31,7 @@ export class Game {
   @OneToMany(() => GamePlayer, (gp) => gp.game, { cascade: true })
   players: GamePlayer[];
 
-  @Column('jsonb')
+  @Column('jsonb', { nullable: true })
   gameSetup: any;
 
   @CreateDateColumn()
