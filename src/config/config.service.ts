@@ -1,13 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
 import { readFileSync } from 'fs';
-import { DataSource } from 'typeorm';
 
 @Injectable()
 export class ConfigService {
   constructor(
     private readonly configService: NestConfigService,
-    private readonly dataSource: DataSource,
     @Inject('JWT_KEY_PAIR')
     private readonly keyPair: CryptoKeyPair,
   ) {}
@@ -18,7 +16,9 @@ export class ConfigService {
   }
 
   getPublicKeyAsString(): string {
-    const publicKeyPath = process.env.JWT_KEY_PUBLIC_PATH;
+    const publicKeyPath = this.configService.get<string>(
+      'JWT_KEY_PUBLIC_PATH',
+    )!;
     if (!publicKeyPath) {
       throw new Error(
         'JWT_KEY_PUBLIC_PATH is not set in environment variables',
