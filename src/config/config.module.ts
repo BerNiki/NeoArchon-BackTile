@@ -12,11 +12,8 @@ import { DataSource } from 'typeorm';
   providers: [
     {
       provide: ConfigService,
-      useFactory: (
-        nestConfig: NestConfigService,
-        dataSource: DataSource,
-        keyPair: CryptoKeyPair,
-      ) => new ConfigService(nestConfig, keyPair),
+      useFactory: (nestConfig: NestConfigService, keyPair: CryptoKeyPair) =>
+        new ConfigService(nestConfig, keyPair),
       inject: [NestConfigService, DataSource, 'JWT_KEY_PAIR'],
     },
   ],
