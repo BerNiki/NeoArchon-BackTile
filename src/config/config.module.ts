@@ -4,7 +4,6 @@ import {
   ConfigService as NestConfigService,
 } from '@nestjs/config';
 import { ConfigService } from './config.service';
-import { DataSource } from 'typeorm';
 
 @Global()
 @Module({
@@ -14,7 +13,7 @@ import { DataSource } from 'typeorm';
       provide: ConfigService,
       useFactory: (nestConfig: NestConfigService, keyPair: CryptoKeyPair) =>
         new ConfigService(nestConfig, keyPair),
-      inject: [NestConfigService, DataSource, 'JWT_KEY_PAIR'],
+      inject: [NestConfigService, 'JWT_KEY_PAIR'],
     },
   ],
   exports: [ConfigService],
