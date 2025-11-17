@@ -76,6 +76,7 @@ build-deploy-job:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
+    - chmod 600 ~/.ssh/id_rsa
     - ssh -o StrictHostKeyChecking=no deploy@13.50.242.114 "cd /var/www/api && git pull && pnpm install && pnpm build && pm2 restart api --update-env"
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
