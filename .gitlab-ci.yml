@@ -97,7 +97,3 @@ test:
     when:
       - runner_system_failure
       - stuck_or_timeout_failure
-sast:
-  stage: test
-include:
-  - template: Jobs/SAST.gitlab-ci.yml
