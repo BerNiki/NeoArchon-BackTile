@@ -46,8 +46,7 @@ node-checker:
 before_script:
 - npm install -g pnpm
 - pnpm install --frozen-lockfile
-- echo "Removing inspect folder"
-- rm -rf .vite-inspect/
+
 prettier-check:
   stage: format
   rules:
@@ -62,29 +61,23 @@ eslint:
   script:
   - echo "Running ESLint..."
   - pnpm eslint "**/*.{js,jsx,ts,tsx}"
-build-job:
-  stage: build
-  rules:
-  - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
-  script:
-  - echo "Compiling the code..."
-  - pnpm run build
-  - cp -a dist/. ${PRODUCTION_PATH}/
-  - echo "Success build"
-  artifacts:
-    paths:
-    - "${PRODUCTION_PATH}"
-    expire_in: 1 week
-pages:
+build-deploy-job:
   stage: deploy
-  needs:
-  - build-job
+  when: manual
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
   script:
-  - cp ${PRODUCTION_PATH}/index.html ${PRODUCTION_PATH}/404.html
-  - echo "Success deploy"
-  artifacts:
-    paths:
-    - public
+    - 'which ssh-agent || sudo apt-get install openssh-client -y'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh -o StrictHostKeyChecking=no deploy@13.50.242.114 "cd /var/www/api && git pull && pnpm install && pnpm build && pm2 restart api --update-env"
   rules:
   - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
 test:
