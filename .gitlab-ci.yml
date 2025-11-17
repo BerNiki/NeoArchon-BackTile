@@ -62,7 +62,8 @@ eslint:
     - pnpm eslint "**/*.{js,jsx,ts,tsx}"
 build-deploy-job:
   stage: deploy
-  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   image: alpine:latest
   before_script:
     - apk add --no-cache openssh-client rsync
