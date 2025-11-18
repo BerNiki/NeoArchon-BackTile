@@ -9,6 +9,7 @@ variables:
   FORCE_COLOR: '1'
   PRODUCTION_PATH: public
   NODE_ENV: development
+  CI: 'true'
 cache:
   key:
     files:
@@ -44,7 +45,7 @@ node-checker:
       fi
 before_script:
   - npm install -g pnpm
-  - CI=true pnpm install --frozen-lockfile
+  - pnpm install --frozen-lockfile
 prettier-check:
   stage: format
   rules:
@@ -74,7 +75,7 @@ build-deploy-job:
     - ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts || true
   script:
     - chmod 700 ~/.ssh
-    - ssh -o StrictHostKeyChecking=no deploy@13.50.242.114 "cd /var/www/api && git pull && -CI=true pnpm install --frozen-lockfile && -CI=true pnpm build && sudo -u ubuntu pm2 restart api --update-env"
+    - ssh -o StrictHostKeyChecking=no deploy@13.50.242.114 "cd /var/www/api && git pull && pnpm install --frozen-lockfile && pnpm build && sudo -u ubuntu pm2 restart api --update-env"
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 test:
