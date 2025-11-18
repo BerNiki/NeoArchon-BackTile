@@ -74,7 +74,7 @@ build-deploy-job:
     - ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts || true
   script:
     - chmod 700 ~/.ssh
-    - ssh -o StrictHostKeyChecking=no deploy@13.50.242.114 "cd /var/www/api && git pull && su ubuntu && pnpm install && pnpm build && pm2 restart api --update-env"
+    - ssh -o StrictHostKeyChecking=no deploy@13.50.242.114 "cd /var/www/api && git pull && pnpm install && pnpm build && sudo -u ubuntu pm2 restart api --update-env"
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 test:
