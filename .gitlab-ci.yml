@@ -45,7 +45,7 @@ node-checker:
       fi
 before_script:
   - npm install -g pnpm
-  - pnpm install --frozen-lockfile
+  - pnpm install
 prettier-check:
   stage: format
   rules:
