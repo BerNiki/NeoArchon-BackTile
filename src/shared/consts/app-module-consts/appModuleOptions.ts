@@ -47,6 +47,16 @@ export const TYPEORM_MODULE_OPTIONS = {
 };
 
 export const LOGGER_MODULE_OPTIONS = {
+  pinoHttp: {
+    redact: {
+      paths: [
+        'req.headers.authorization',
+        'req.headers.cookie',
+        'req.headers["set-cookie"]',
+      ],
+      remove: true,
+    },
+  },
   transport:
     process.env.NODE_ENV !== 'production'
       ? {

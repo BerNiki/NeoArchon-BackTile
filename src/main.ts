@@ -18,7 +18,10 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from './shared/consts/app-config-consts/swagger-config/swagger-config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule, {
+    httpsOptions,
+    bufferLogs: true,
+  });
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe(globalValidationPipeOptions));
   app.useGlobalInterceptors(new TransformInterceptor());
