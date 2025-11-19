@@ -1,4 +1,3 @@
-// @ts-check
 const generateKeyPairSync = require('crypto').generateKeyPairSync;
 const writeFileSync = require('fs').writeFileSync;
 
