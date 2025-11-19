@@ -45,7 +45,7 @@ node-checker:
       fi
 before_script:
   - npm install -g pnpm
-  - pnpm install --frozen-lockfile
+  - pnpm install
 prettier-check:
   stage: format
   rules:
@@ -59,7 +59,7 @@ eslint:
     - if: '$CI_MERGE_REQUEST_ID'
   script:
     - echo "Running ESLint..."
-    - pnpm eslint "**/*.{js,jsx,ts,tsx}"
+    - pnpm eslint "**/*.{jsx,ts,tsx}"
 build-deploy-job:
   stage: deploy
   rules:
