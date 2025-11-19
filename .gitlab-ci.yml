@@ -77,6 +77,8 @@ build-deploy-job:
     - ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts || true
   script:
     - chmod 700 ~/.ssh
+    - npm version patch
+    - git push --follow-tags
     - ssh -o StrictHostKeyChecking=no deploy@13.50.252.204 "export CI=true && cd /var/www/api && git pull && pm2 stop api && pnpm install --frozen-lockfile && pnpm build && pm2 start api --update-env"
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
