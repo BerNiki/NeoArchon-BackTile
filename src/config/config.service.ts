@@ -11,7 +11,6 @@ export class ConfigService {
   ) {}
 
   getPrivateKey(): CryptoKey {
-    console.log(this.keyPair);
     const { privateKey } = this.keyPair;
     return privateKey;
   }

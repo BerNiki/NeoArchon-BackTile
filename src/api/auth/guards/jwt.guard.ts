@@ -44,8 +44,12 @@ export class JwtGuard implements CanActivate {
       );
 
       if (!payload.sub) throw new Error('Invalid payload!');
-      console.log(payload.sub);
       const user = await this.userService.findById(payload.sub);
+      const jtiFromCookie = payload.jti;
+
+      if (!jtiFromCookie && !user.jti && jtiFromCookie !== user.jti)
+        throw new Error('User is not logged in!');
+
       request['user'] = user;
 
       return true;
