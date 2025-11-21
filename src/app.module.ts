@@ -16,8 +16,11 @@ import { CorrelationIdMiddleware } from './common/middleware/correlation-id.midd
 import {
   CONFIG_MODULE_OPTIONS,
   LOGGER_MODULE_OPTIONS,
+  THROTTLER_MODULE_OPTIONS,
   TYPEORM_MODULE_OPTIONS,
 } from './shared/consts/app-module-consts/appModuleOptions';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -29,8 +32,10 @@ import {
     NestConfigModule.forRoot(CONFIG_MODULE_OPTIONS),
     TypeOrmModule.forRootAsync(TYPEORM_MODULE_OPTIONS),
     LoggerModule.forRoot(LOGGER_MODULE_OPTIONS),
+    ThrottlerModule.forRoot(THROTTLER_MODULE_OPTIONS),
     HealthModule,
   ],
+  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
