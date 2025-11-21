@@ -12,8 +12,10 @@ export const tokensSigner = async (
 ): Promise<{
   accessToken: string;
   refreshToken: string;
+  jti: string;
 }> => {
   const refreshToken = crypto.randomBytes(40).toString('hex');
+  const jti = uuid();
 
   const accessToken = await new SignJWT()
     .setSubject(userId)
@@ -22,8 +24,8 @@ export const tokensSigner = async (
     .setIssuer(issuer)
     .setAudience(audience)
     .setExpirationTime(`${jwtExpiration}s`)
-    .setJti(uuid())
+    .setJti(jti)
     .sign(privateKey);
 
-  return { accessToken, refreshToken };
+  return { accessToken, refreshToken, jti };
 };

@@ -60,7 +60,15 @@ export class AuthController {
 
   @Post('logout')
   @UseGuards(JwtGuard)
-  async logout(@GetUser() user: User) {
-    return this.authService.logout(user);
+  async logout(
+    @GetUser() user: User,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const message = await this.authService.logout(user);
+
+    res.clearCookie('accessToken', ACCESS_TOKEN_COOKIE_OPTIONS);
+    res.clearCookie('refreshToken', REFRESH_TOKEN_COOKIE_OPTIONS);
+
+    return message;
   }
 }

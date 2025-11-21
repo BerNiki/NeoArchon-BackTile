@@ -1,11 +1,9 @@
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { JWTPayload, decodeJwt } from 'jose';
 import { Logger } from 'nestjs-pino';
@@ -16,11 +14,7 @@ import { verifyPassword } from '../utils/passwordHasher';
 @Injectable()
 export class JwtRefreshGuard implements CanActivate {
   private readonly logger = new Logger();
-  constructor(
-    private readonly configService: ConfigService,
-    @Inject('JWT_KEY_PAIR') private readonly keyPair: CryptoKeyPair,
-    private readonly userService: UsersService,
-  ) {}
+  constructor(private readonly userService: UsersService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();

@@ -28,7 +28,7 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   @Exclude()
-  currentHashedRefreshToken?: string;
+  currentHashedRefreshToken?: string | null;
 
   @IsOptional()
   @IsNumber()
@@ -38,5 +38,5 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   @Exclude()
-  jti?: string;
+  jti?: string | null;
 }

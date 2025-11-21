@@ -23,16 +23,16 @@ export class User {
   @Exclude()
   passwordHash: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   @Exclude()
-  jti: string;
+  jti: string | null;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   @Exclude()
-  currentHashedRefreshToken?: string;
+  currentHashedRefreshToken?: string | null;
 
-  @Column({ nullable: true })
-  currentHashedRefreshTokenExpiresAt?: number;
+  @Column({ nullable: true, type: 'bigint' })
+  currentHashedRefreshTokenExpiresAt?: number | null;
 
   @Column({ default: 1000 })
   elo: number;

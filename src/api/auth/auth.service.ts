@@ -34,7 +34,7 @@ export class AuthService {
     const { privateKey, kid, jwtExpiration, issuer, audience } =
       this.ConfigService.tokenOptions;
 
-    const { accessToken, refreshToken } = await tokensSigner(
+    const { accessToken, refreshToken, jti } = await tokensSigner(
       user.id,
       privateKey,
       kid,
@@ -49,6 +49,7 @@ export class AuthService {
     await this.usersService.updateUser(user.id, {
       currentHashedRefreshToken: hashedNewRefreshToken,
       currentHashedRefreshTokenExpiresAt: expiresAt,
+      jti: jti,
     });
 
     return { accessToken, refreshToken };
@@ -81,8 +82,8 @@ export class AuthService {
     message: string;
   }> {
     await this.usersService.updateUser(user.id, {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      currentHashedRefreshToken: null as any,
+      currentHashedRefreshToken: null,
+      jti: null,
     });
     return { message: 'Logged out' };
   }
@@ -118,7 +119,7 @@ export class AuthService {
       const { privateKey, kid, jwtExpiration, issuer, audience } =
         this.ConfigService.tokenOptions;
 
-      const { accessToken, refreshToken } = await tokensSigner(
+      const { accessToken, refreshToken, jti } = await tokensSigner(
         user.id,
         privateKey,
         kid,
@@ -133,6 +134,7 @@ export class AuthService {
       await this.usersService.updateUser(user.id, {
         currentHashedRefreshToken: hashedRefreshToken,
         currentHashedRefreshTokenExpiresAt: expiresAt,
+        jti: jti,
       });
 
       return { accessToken, refreshToken };
