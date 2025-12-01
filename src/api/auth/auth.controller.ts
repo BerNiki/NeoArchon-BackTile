@@ -11,7 +11,9 @@ import {
 } from 'src/api/auth/consts/cookieSetups';
 import { JwtGuard } from './guards/jwt.guard';
 import { JwtRefreshGuard } from './guards/jwt.refresh.guard';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
+@UseGuards(ThrottlerGuard)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -21,6 +23,7 @@ export class AuthController {
     return this.authService.signUp(signUpDto);
   }
 
+  @Throttle({ default: { limit: 5, ttl: 300 } })
   @Post('signin')
   async signIn(
     @Body() signInDto: SignInDto,
@@ -43,6 +46,7 @@ export class AuthController {
     return this.authService.updatePassword(user, updatePasswordDto);
   }
 
+  @Throttle({ default: { limit: 20, ttl: 300 } })
   @Post('refresh')
   @UseGuards(JwtRefreshGuard)
   async refreshTokens(
