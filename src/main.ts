@@ -22,10 +22,10 @@ async function bootstrap() {
     httpsOptions,
     bufferLogs: true,
   });
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useLogger(app.get(Logger));
+  app.useGlobalFilters(app.get(HttpExceptionFilter));
   app.useGlobalPipes(new ValidationPipe(globalValidationPipeOptions));
   app.useGlobalInterceptors(new TransformInterceptor());
-  app.useLogger(app.get(Logger));
   app.enableCors(corsOptions);
   app.use(cookieParser());
   app.setGlobalPrefix('api');

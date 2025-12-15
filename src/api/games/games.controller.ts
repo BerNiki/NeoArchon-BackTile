@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { GetUser } from 'src/api/users/decorators/get-user.decorator';
 import { User } from 'src/api/users/entities/users.entity';
 import { Game } from './entities/games.entity';
@@ -17,7 +17,12 @@ export class GamesController {
     @GetUser() player: User,
     @Body() createGameDto: CreateGameDto,
   ): Promise<Game> {
-    return this.gamesService.createGame(player, createGameDto.playerRole);
+    return this.gamesService.createGame(player, createGameDto);
+  }
+
+  @Get('list')
+  getGameList(): Promise<Game[]> {
+    return this.gamesService.gameList();
   }
 
   @Patch('join')

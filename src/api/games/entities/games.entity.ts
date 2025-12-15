@@ -1,15 +1,15 @@
 import { GameStatusEnum } from 'src/api/games/enums/gameStatus.enum';
 import { Move } from 'src/api/moves/entities/moves.entity';
-import { User } from 'src/api/users/entities/users.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
 import { GamePlayer } from './gamePlayers.entity';
+import type { GameSetupInterface } from '../interface/gameSetupInterface';
+import { TeamsEnum } from '../interface/unitInterface';
 
 @Entity('games')
 export class Game {
@@ -20,10 +20,21 @@ export class Game {
   status: GameStatusEnum;
 
   @Column('jsonb')
-  board_state: any;
+  board_state: GameSetupInterface;
 
-  @ManyToOne(() => User, { nullable: true })
-  turnUser: User;
+  @Column()
+  name: string;
+
+  @Column({ nullable: true })
+  password: string;
+
+  @Column({
+    type: 'enum',
+    enum: TeamsEnum,
+    default: TeamsEnum.light,
+    nullable: true,
+  })
+  turnUser: TeamsEnum;
 
   @OneToMany(() => Move, (move: Move) => move.game)
   moves: Move[];

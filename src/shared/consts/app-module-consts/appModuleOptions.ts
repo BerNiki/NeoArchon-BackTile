@@ -41,8 +41,8 @@ export const TYPEORM_MODULE_OPTIONS = {
     type: 'postgres' as const,
     url: configService.get<string>('DATABASE_URL'),
     entities: [User, Game, GamePlayer, Move],
-    synchronize: true,
     logging: true,
+    synchronize: true,
   }),
 };
 

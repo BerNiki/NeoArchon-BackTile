@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PlayerRolesEnum } from 'src/api/games/enums/playerRoles.enum';
 
 export class CreateGameDto {
@@ -8,4 +8,11 @@ export class CreateGameDto {
   })
   @IsNotEmpty({ message: 'playerRole should not be empty' })
   playerRole: PlayerRolesEnum;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  @IsOptional()
+  password?: string;
 }

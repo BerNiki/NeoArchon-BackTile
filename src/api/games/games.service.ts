@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { GamePlayer } from './entities/gamePlayers.entity';
 import { GAME_NOT_FOUND_ERROR_MESSAGE } from 'src/api/games/consts/gameErrorMessage';
 import { BaseBoardLayout } from './consts/baseGameSetup';
+import { GameStatusEnum } from './enums/gameStatus.enum';
+import { CreateGameDto } from './dto/create-game.dto';
 
 @Injectable()
 export class GamesService {
@@ -21,10 +23,13 @@ export class GamesService {
     return this.gamesRepo.findOneBy({ id: gameId });
   }
 
-  async createGame(player: User, playerRole: PlayerRolesEnum): Promise<Game> {
+  async createGame(player: User, createGameDto: CreateGameDto): Promise<Game> {
+    const { name, password, playerRole } = createGameDto;
     const newGame = this.gamesRepo.create({
       moves: [],
       board_state: BaseBoardLayout,
+      name,
+      password,
     });
 
     await this.gamesRepo.save(newGame);
@@ -42,21 +47,36 @@ export class GamesService {
     return newGame;
   }
 
+  async gameList(): Promise<Game[]> {
+    return this.gamesRepo.find({
+      where: { status: GameStatusEnum.waitingForPlayers },
+    });
+  }
+
   async joinGame(player: User, gameId: string, playerRole: PlayerRolesEnum) {
-    const game = await this.findGameById(gameId);
+    const game = await this.gamesRepo.findOne({
+      where: { id: gameId },
+      relations: ['players', 'players.user'],
+    });
 
     if (!game) {
       throw new NotFoundException(GAME_NOT_FOUND_ERROR_MESSAGE);
     }
+
+    const existingPlayer = game.players.find((p) => p.user.id === player.id);
+    if (existingPlayer) {
+      return game;
+    }
+
     const gamePlayer = this.gamePlayerRepo.create({
-      game: game,
+      game,
       user: player,
       role: playerRole,
     });
 
-    game.players.push(gamePlayer);
+    await this.gamePlayerRepo.save(gamePlayer);
 
-    await this.gamesRepo.save(game);
+    game.players.push(gamePlayer);
 
     return game;
   }

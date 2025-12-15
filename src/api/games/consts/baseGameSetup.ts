@@ -1,511 +1,754 @@
 import {
   GameSetupInterface,
-  LightUnitsEnum,
   ColorEnum,
-  DarkUnitsEnum,
+  colorDirection,
 } from '../interface/gameSetupInterface';
+import { UNITS } from './units';
 
 export const BaseBoardLayout: GameSetupInterface = [
   [
     {
-      unit: LightUnitsEnum.valkyrie,
-      color: ColorEnum.dark,
+      unit: UNITS.VALKYRIE,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: LightUnitsEnum.archer,
-      color: ColorEnum.light,
+      unit: UNITS.ARCHER,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.dark,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: true,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: DarkUnitsEnum.manticore,
-      color: ColorEnum.dark,
+      unit: UNITS.MANTICORE,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: DarkUnitsEnum.banshee,
-      color: ColorEnum.light,
+      unit: UNITS.BANSHEE,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
   ],
   [
     {
-      unit: LightUnitsEnum.golem,
-      color: ColorEnum.light,
+      unit: UNITS.GOLEM,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: LightUnitsEnum.knight,
-      color: ColorEnum.dark,
+      unit: UNITS.KNIGHT,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.dark,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
-      unit: DarkUnitsEnum.goblin,
-      color: ColorEnum.light,
+      unit: UNITS.GOBLIN,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: DarkUnitsEnum.troll,
-      color: ColorEnum.dark,
+      unit: UNITS.TROLL,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
   ],
   [
     {
-      unit: LightUnitsEnum.unicorn,
-      color: ColorEnum.dark,
+      unit: UNITS.UNICORN,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: LightUnitsEnum.knight,
-      color: ColorEnum.light1,
+      unit: UNITS.KNIGHT,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.dark,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.dark,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: DarkUnitsEnum.goblin,
-      color: ColorEnum.light1,
+      unit: UNITS.GOBLIN,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
-      unit: DarkUnitsEnum.basilisk,
-      color: ColorEnum.light,
+      unit: UNITS.BASILISK,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
   ],
   [
     {
-      unit: LightUnitsEnum.djinni,
-      color: ColorEnum.light1,
+      unit: UNITS.DJINNI,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
-      unit: LightUnitsEnum.knight,
-      color: ColorEnum.light,
+      unit: UNITS.KNIGHT,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.dark,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.dark,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: DarkUnitsEnum.goblin,
-      color: ColorEnum.dark,
+      unit: UNITS.GOBLIN,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: DarkUnitsEnum.shapeshifter,
-      color: ColorEnum.light1,
+      unit: UNITS.SHAPESHIFTER,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
   ],
   [
     {
-      unit: LightUnitsEnum.wizard,
-      color: ColorEnum.light,
+      unit: UNITS.WIZARD,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: true,
       cycling: false,
     },
     {
-      unit: LightUnitsEnum.knight,
-      color: ColorEnum.light1,
+      unit: UNITS.KNIGHT,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: true,
-      cycling: true,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: DarkUnitsEnum.goblin,
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: DarkUnitsEnum.sorceress,
-      color: ColorEnum.dark,
-      isPointOfPower: true,
-      cycling: false,
-    },
-  ],
-  [
-    {
-      unit: LightUnitsEnum.phoenix,
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: LightUnitsEnum.knight,
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: DarkUnitsEnum.goblin,
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: DarkUnitsEnum.dragon,
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-  ],
-  [
-    {
-      unit: LightUnitsEnum.unicorn,
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: LightUnitsEnum.knight,
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: DarkUnitsEnum.goblin,
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: DarkUnitsEnum.basilisk,
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-  ],
-  [
-    {
-      unit: LightUnitsEnum.golem,
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: LightUnitsEnum.knight,
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: DarkUnitsEnum.goblin,
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: DarkUnitsEnum.troll,
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-  ],
-  [
-    {
-      unit: LightUnitsEnum.valkyrie,
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: LightUnitsEnum.archer,
-      color: ColorEnum.light,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.dark,
-      isPointOfPower: false,
-      cycling: false,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
-      isPointOfPower: false,
-      cycling: true,
-    },
-    {
-      unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: true,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light1,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: true,
     },
     {
       unit: 'EMPTY',
-      color: ColorEnum.light,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: UNITS.GOBLIN,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: UNITS.SORCERESS,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: true,
+      cycling: false,
+    },
+  ],
+  [
+    {
+      unit: UNITS.PHOENIX,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: UNITS.KNIGHT,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: DarkUnitsEnum.manticore,
-      color: ColorEnum.dark,
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },
     {
-      unit: DarkUnitsEnum.banshee,
-      color: ColorEnum.light,
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.GOBLIN,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.DRAGON,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+  ],
+  [
+    {
+      unit: UNITS.UNICORN,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.KNIGHT,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.GOBLIN,
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: UNITS.BASILISK,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+  ],
+  [
+    {
+      unit: UNITS.GOLEM,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.KNIGHT,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: UNITS.GOBLIN,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.TROLL,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+  ],
+  [
+    {
+      unit: UNITS.VALKYRIE,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.ARCHER,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: true,
+      cycling: true,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.dark1,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: true,
+    },
+    {
+      unit: 'EMPTY',
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.MANTICORE,
+      color: {
+        color: ColorEnum.dark,
+        direction: colorDirection.ascending,
+      },
+      isPointOfPower: false,
+      cycling: false,
+    },
+    {
+      unit: UNITS.BANSHEE,
+      color: {
+        color: ColorEnum.light,
+        direction: colorDirection.ascending,
+      },
       isPointOfPower: false,
       cycling: false,
     },

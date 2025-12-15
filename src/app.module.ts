@@ -18,6 +18,7 @@ import {
   LOGGER_MODULE_OPTIONS,
   TYPEORM_MODULE_OPTIONS,
 } from './shared/consts/app-module-consts/appModuleOptions';
+import { HttpExceptionFilter } from './common/exception-filter/http-exception.filter';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import {
     LoggerModule.forRoot(LOGGER_MODULE_OPTIONS),
     HealthModule,
   ],
+  providers: [HttpExceptionFilter],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
