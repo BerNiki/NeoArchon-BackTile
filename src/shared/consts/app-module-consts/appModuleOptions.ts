@@ -80,3 +80,13 @@ export const LOGGER_MODULE_OPTIONS = {
     }),
   },
 };
+
+export const THROTTLER_MODULE_OPTIONS = {
+  throttlers: [
+    {
+      ttl: 6000,
+      limit: 20,
+      blockDuration: 1500,
+    },
+  ],
+};

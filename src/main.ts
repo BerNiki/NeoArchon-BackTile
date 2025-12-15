@@ -28,7 +28,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
   app.enableCors(corsOptions);
   app.use(cookieParser());
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api/v1');
 
   const documentFactory = () =>
     SwaggerModule.createDocument(app, swaggerConfig);
