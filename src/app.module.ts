@@ -22,6 +22,7 @@ import {
 import { HttpExceptionFilter } from './common/exception-filter/http-exception.filter';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { EventsGatewayModule } from './socket/events.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { APP_GUARD } from '@nestjs/core';
     UsersModule,
     GamesModule,
     ConfigModule,
+    EventsGatewayModule,
     NestConfigModule.forRoot(CONFIG_MODULE_OPTIONS),
     TypeOrmModule.forRootAsync(TYPEORM_MODULE_OPTIONS),
     LoggerModule.forRoot(LOGGER_MODULE_OPTIONS),
